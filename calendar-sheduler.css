@@ -50,6 +50,14 @@ table.calendar-table td {
 }
 
 /*******************/
+/* other fields */
+#loading {
+	padding: 5%;
+
+}
+
+
+/*******************/
 /* other classes */
 
 
@@ -73,6 +81,6 @@ table.calendar-table td {
 	position: fixed;
 	left: 10%;
 	top: 10%;
+	max-width: 80%;
 	z-index: 11;
-
 }

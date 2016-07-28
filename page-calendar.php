@@ -21,55 +21,52 @@
 		var API_VERSION = "<?= API_VERSION ?>";
 		var PAGE_ID = "<?= PAGE_ID ?>";
 	</script>
-	
+
+		<link rel="stylesheet" href="calendar-sheduler.css">
+
 		<script src="jquery-3.1.0.js"></script>
-		<script src="fb-conn.js"></script>
 		<script src="calendar.js"></script>
-	</head>
+		<script src="calendar-sheduler.js"></script>
+		<script src="fb-conn.js"></script>
+</head>
 	<body>
 
 <script>
 function createCalendarAndLoadPosts() {
 	var month = 7;
 	var year = 2016;
+	var date = new Date();
+	date.setFullYear(year, month - 1, 1);
 
-	$("#loading").show();
+	showLoading('loading posts');
 
-	createCalendar(month, year);
-	loadPosts(month, year);
+	createCalendar(date);
+	loadPosts(date);
 }
 
-function createCalendar(month, year) {
-	calendarOfMonth('calendar-wrapper', month, year);	
-	initializeMonthLists('calendar-wrapper', month, year);
+
+function createCalendar(date) {
+	createCalendarSheduler('calendar-wrapper', date);
 }
 
-function loadPosts(month, year) {
+
+function loadPosts(date) {
 	var postHandler = function(post) {
 		var when = new Date(post.created_time);
 		//console.log(when);
 
-		var pday = when.getDate();
-		var pmonth = when.getMonth() + 1;
-		var pyear = when.getFullYear();
-	
-		if (pmonth != month || pyear != year) {
-			console.warn('post outside of range');
-		}
-
 		var what = (when.getHours() + ":" + when.getMinutes()) + ": " 
 			+ shorten(post.message);
-		//console.log(pday + "." + pmonth + "." + pyear + "->" + what);
 
-		appendToDateList('calendar-wrapper', pday, pmonth, pyear, what);
+		addToDay('calendar-wrapper', when, what);
 	};
 
 	var lastHandler = function() {
-		$("#loading").hide();
+		hideLoading();
 	};
 
 
-	fbLoadPosts(postHandler, lastHandler, month, year);
+	fbLoadPosts(postHandler, lastHandler, date);
 }
 
 /******************************************************************************/
@@ -97,25 +94,20 @@ function toggleStatus(isLogged) {
 	}
 }
 
-/*
-function doFBstuff() {
-	
-	
-
-	var query = '/' + PAGE_ID + '/promotable_posts?is_published=true';
-	FB.api(query, function(response) {
-	
-		console.log(response);
-		
-		document.getElementById('status').innerHTML =
-		
-			'Here: <pre>' + JSON.stringify(response, null, 2) + '</pre>';
-			
-	});
-	
+function showLoading(what) {
+	var $content = $('<div id="loading"><h2>Counting to infinity, please wait ...</h2><p>' + what + '</p></div>');
+	showOverlay($content);
 }
- */
-	</script>
+
+
+function hideLoading() {
+	hideOverlay();
+}
+
+$(function() {
+	showLoading('connecting to facebook');
+});
+</script>
 
 		<article>
 			
@@ -133,10 +125,6 @@ function doFBstuff() {
 				<div id="calendar-wrapper"></div>
 			</div>
 		<div id="status">
-		</div>
-
-		<div id="loading">
-			LOADING...
 		</div>
 		</article>
 	</body>

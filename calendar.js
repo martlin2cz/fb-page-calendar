@@ -122,7 +122,7 @@ function generateCalendarTbody(from, days) {
 	For given date returns cell's content div found in given ID of calendar
 */
 function getDayContent(ownerID, date) {
-	var row = 1 + rowOfDay(date);
+	var row = 2 + rowOfDay(date);
 	var col = colOfDay(date);
 	//console.debug('row=' + row + ',col=' + col);
 	var $content = $('#' + ownerID + ' > table tr:eq(' + row + ') td:eq(' + col + ') > .calendar-day-content');

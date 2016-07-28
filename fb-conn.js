@@ -18,8 +18,7 @@ function checkLoginState() {
 		statusChangeCallback(response);
 	});
 }
-/*
-	 XXX
+
 window.fbAsyncInit = function() {
 	FB.init({
 		appId      : APP_ID,
@@ -39,28 +38,29 @@ window.fbAsyncInit = function() {
 	js.src = "//connect.facebook.net/en_US/sdk.js";
 	fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
-*/
+
 function doFBstuff() {
-	console.debug("uncoment here ...");	//XXX debug
-//	createCalendarAndLoadPosts();
+	createCalendarAndLoadPosts();
 }
 
 
-function nextMonthOf(month, year) {
-	return ((month - 1) + 1)  % 12 + 1;
+function nextMonthOf(date) {
+	return (date.getMonth() + 1)  % 12 + 1;
 }
 
-function nextMonthYearOf(month, year) {
-	if (month == 12) {
-		return year + 1; 
+function nextMonthYearOf(date) {
+	if (date.getMonth() == 11) {
+		return date.getFullYear() + 1; 
 	} else {
-		return year;
+		return date.getFullYear();
 	}
 }
 
-function fbLoadPosts(postHandler, lastHandler, month, year) {
-	var nextMonth = nextMonthOf(month, year);
-	var nextMonthYear = nextMonthYearOf(month, year);
+function fbLoadPosts(postHandler, lastHandler, date) {
+	var month = date.getMonth() + 1;
+	var year = date.getFullYear();
+	var nextMonth = nextMonthOf(date);
+	var nextMonthYear = nextMonthYearOf(date);
 	
 	var query = '/' + PAGE_ID + '/promotable_posts'
 		+'?is_published=' + 'true'

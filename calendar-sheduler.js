@@ -69,6 +69,10 @@ function addToDay(ownerID, day, what) {
 	Displays overlay with given content
 */
 function showOverlay($what) {
+	if ($('#overlay-wrapper').length) {
+		hideOverlay();
+	}
+
 	$shadow = $('<div id="overlay-shadow"></div>');
 	$content = $('<div id="overlay-content"></div>');
 	$wrapper = $('<div id="overlay-wrapper"></div>');
