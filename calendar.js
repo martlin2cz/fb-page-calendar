@@ -4,42 +4,98 @@
 	 26.7.2016
 	 */
 
-function firstDayOfMonth(month, year) {
-	var dd = new Date();
-	dd.setFullYear(year, month - 1, 1);
-	return dd.getDay();
+/********************************************************************/
+
+/**
+	Returns copy of given date. What else?
+*/
+function cloneDate(date) {
+	return new Date(date.getTime());
 }
 
-function numberOfDays(month, year) {
+/**
+	Returns specified date's month's first day (1 = Mon, 2 = Tue, ... 7 = Sun)
+*/
+function firstDayOfMonth(date) {
+	var year = date.getFullYear();
+	var month = date.getMonth();
+	var md = new Date();
+	md.setFullYear(year, month, 1);
+
+	var day = md.getDay();
+	if (day == 0) {
+		return 7;
+	} else {
+		return day;
+	}
+}
+
+/**
+	Returns number of specified date's month (28,29,30,31)
+*/
+function daysInMonth(date) {
+	var year = date.getFullYear();
+	var month = date.getMonth() + 1;
 	var md = new Date(year, month, 0);
 	return md.getDate();
 }
 
-function rowOfDay(from, day) {
+/**
+	Returns row index (0 - ...) of specified day in its month's table
+*/
+function rowOfDay(date) {
+	var from = firstDayOfMonth(date);
+	var day = date.getDate();
 	return Math.floor((from + day - 2) / 7);
 }
 
-function colOfDay(from, day) {
+/**
+	Returns column index (0, ... 6) of specified day in ints month's table's week's row
+*/
+function colOfDay(date) {
+	var from = firstDayOfMonth(date);
+	var day = date.getDate();
 	return (from + day - 2) % 7;
 }
-function calendarOfMonth(ownerID, month, year) {
-	var from = firstDayOfMonth(month, year);
-	var days = numberOfDays(month, year);
+
+/********************************************************************/
+
+/**
+	Generates simple calendar as child of given ID, and given date's month
+*/
+function calendarOfMonth(ownerID, date) {
+	var from = firstDayOfMonth(date);
+	var days = daysInMonth(date);
 	
-	//console.log(month + ": " + from + "-" + days);
-	generateCalendar(ownerID, from, days);
+	generateCalendar(ownerID, from, days, date);
 }
 
-function generateCalendar(ownerID, from, days) {
-	var $table = $('<table id="' + ownerID +'-calendar-table" border="1"></table>');
-	
-	$header = $('<thead> days: ' + days + '</thead>');	//FIXME
-	$table.append($header);
-	
-	
+/**
+	Generates simple calendar as child of given ID, starting with day 1 at specified day from and with given number of days
+*/
+function generateCalendar(ownerID, from, days, date) {
+	var $table = $('<table id="' + ownerID +'-calendar-table" class="calendar-table"></table>');
+
+	var month = date.getMonth() + 1;
+	var year = date.getFullYear();
+	$thead = $('<thead><tr><th colspan="7">Month ' + month + ' of year ' + year + '</th></tr></thead>'); 
+
 	$hrow=$('<tr><th>Po</th><th>Út</th><th>St</th><th>Čt</th><th>Pá</th><th>So</th><th>Ne</th></tr>');
-	$table.append($hrow);
-	
+	$thead.append($hrow);
+
+	var $tbody = generateCalendarTbody(from, days);
+
+	$table.append($thead);
+	$table.append($tbody);
+
+	$('#' + ownerID).append($table);
+}
+
+/**
+	To given $table adds cells of calendar
+*/
+function generateCalendarTbody(from, days) {
+	var $tbody = $('<tbody></tbody>');
 	var i, j;
 	for (i = - from + 2; i <= days; 1) {
 		var $row = $('<tr></tr>');
@@ -55,45 +111,23 @@ function generateCalendar(ownerID, from, days) {
 			$row.append($cell);
 			i++;
 		}
-		$table.append($row);
+		$tbody.append($row);
 	}
-
-	$('#' + ownerID).append($table);
+	return $tbody;
 }
 
-function getDayContent(ownerID, from, day) {
-	var row = 1+rowOfDay(from, day);
-	var col = colOfDay(from, day);
-	//console.log('row=' + row + ',col=' + col);
+/********************************************************************/
+
+/**
+	For given date returns cell's content div found in given ID of calendar
+*/
+function getDayContent(ownerID, date) {
+	var row = 1 + rowOfDay(date);
+	var col = colOfDay(date);
+	//console.debug('row=' + row + ',col=' + col);
 	var $content = $('#' + ownerID + ' > table tr:eq(' + row + ') td:eq(' + col + ') > .calendar-day-content');
 	//console.log($content);
 	return $content;
 }
 
 
-function initializeMonthLists(ownerID, month, year) {
-	var from = firstDayOfMonth(month, year);
-	var days = numberOfDays(month, year);
-	
-	initializeDaysLists(ownerID, from, days);
-}
-
-
-function initializeDaysLists(ownerID, from, days) {
-	var i;
-	for (i = 1; i <= days; i++) {
-		var $content = getDayContent(ownerID, from, i);
-		$($content).append('<ul></ul>');
-	}
-}
-
-function appendToDayList(ownerID, from, day, what) {
-	var $content = getDayContent(ownerID, from, day);
-	var $what = $('<li>' + what + '</li>');
-	$($content).find('ul').append($what);
-}
-
-function appendToDateList(ownerID, day, month, year, what) {
-	var from = firstDayOfMonth(month, year);
-	appendToDayList(ownerID, from, day, what);
-}

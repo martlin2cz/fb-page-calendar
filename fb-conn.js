@@ -18,7 +18,8 @@ function checkLoginState() {
 		statusChangeCallback(response);
 	});
 }
-
+/*
+	 XXX
 window.fbAsyncInit = function() {
 	FB.init({
 		appId      : APP_ID,
@@ -38,9 +39,10 @@ window.fbAsyncInit = function() {
 	js.src = "//connect.facebook.net/en_US/sdk.js";
 	fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
-
+*/
 function doFBstuff() {
-	createCalendarAndLoadPosts();
+	console.debug("uncoment here ...");	//XXX debug
+//	createCalendarAndLoadPosts();
 }
 
 

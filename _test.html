@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Testing page</title>
+
+		<link rel="stylesheet" href="calendar-sheduler.css">
+		<script src="jquery-3.1.0.js"></script>
+		<script src="calendar.js"></script>
+		<script src="calendar-sheduler.js"></script>
+
+	
+	</head>
+	<body>
+	<script>
+	function assertEquals(expected, actual, message) {
+		var log = (expected + " =? " + actual + ": " + message);
+		
+		if (expected != actual) {
+			console.error(log);
+		} else {
+			console.info(log);
+		}
+	}
+	</script>
+
+		
+		<p>
+		See browser console output for other tests result.
+	</p>
+
+	<div>
+		<p>Here follows some generated calendars:</p>
+		<span id="cal1-1"></span>
+		<span id="cal1-2"></span>
+		<span id="cal1-3"></span>
+	</div>
+	<div>
+		<p>Here follows some others calendars:</p>
+		<span id="cal2-1"></span>
+		<span id="cal2-2"></span>
+		<span id="cal2-3"></span>
+	</div>
+
+
+	
+	
+	<script>
+
+d1 = new Date(); d1.setFullYear(2016, 0, 1);
+assertEquals(5, firstDayOfMonth(d1), "firstDayOfMonth " + d1);
+
+d2 = new Date(); d2.setFullYear(2016, 1, 1);
+assertEquals(1, firstDayOfMonth(d2), "firstDayOfMonth " + d2);
+
+d3 = new Date(); d3.setFullYear(2016, 4, 1);
+assertEquals(7, firstDayOfMonth(d3), "firstDayOfMonth " + d3);
+
+d4 = new Date(); d4.setFullYear(2016, 10, 11);
+assertEquals(2, firstDayOfMonth(d4), "firstDayOfMonth " + d4);
+
+d5 = new Date(); d5.setFullYear(2016, 7, 1);
+assertEquals(99, firstDayOfMonth(d5), "firstDayOfMonth " + d5);
+
+
+d1 = new Date(); d1.setFullYear(2016, 0, 1);
+assertEquals(31, daysInMonth(d1), "daysInMonth " + d1);
+
+d2 = new Date(); d2.setFullYear(2016, 1, 1);
+assertEquals(29, daysInMonth(d2), "daysInMonth " + d2);
+
+d3 = new Date(); d3.setFullYear(2016, 4, 1);
+assertEquals(31, daysInMonth(d3), "daysInMonth " + d3);
+
+d4 = new Date(); d4.setFullYear(2016, 10, 11);
+assertEquals(30, daysInMonth(d4), "daysInMonth " + d4);
+
+d5 = new Date(); d5.setFullYear(2016, 7, 1);
+assertEquals(99, daysInMonth(d5), "daysInMonth " + d5);
+
+
+d1 = new Date(); d1.setFullYear(2016, 0, 3);
+assertEquals(0, rowOfDay(d1), "rowOfDay " + d1);
+
+d2 = new Date(); d2.setFullYear(2016, 1, 29);
+assertEquals(4, rowOfDay(d2), "rowOfDay " + d2);
+
+d3 = new Date(); d3.setFullYear(2016, 4, 2);
+assertEquals(1, rowOfDay(d3), "rowOfDay " + d3);
+
+d4 = new Date(); d4.setFullYear(2016, 10, 11);
+assertEquals(1, rowOfDay(d4), "rowOfDay " + d4);
+
+d5 = new Date(); d5.setFullYear(2016, 7, 1);
+assertEquals(99, rowOfDay(d5), "rowOfDay " + d5);
+
+
+d1 = new Date(); d1.setFullYear(2016, 0, 3);
+assertEquals(6, colOfDay(d1), "colOfDay " + d1);
+
+d2 = new Date(); d2.setFullYear(2016, 1, 7);
+assertEquals(6, colOfDay(d2), "colOfDay " + d2);
+
+d3 = new Date(); d3.setFullYear(2016, 4, 30);
+assertEquals(0, colOfDay(d3), "colOfDay " + d3);
+
+d4 = new Date(); d4.setFullYear(2016, 10, 11);
+assertEquals(4, colOfDay(d4), "colOfDay " + d4);
+
+d5 = new Date(); d5.setFullYear(2016, 7, 1);
+assertEquals(99, colOfDay(d5), "colOfDay " + d5);
+
+
+d1 = new Date(); d1.setFullYear(2016, 0, 3);
+calendarOfMonth('cal1-1', d1);
+
+d2 = new Date(); d2.setFullYear(2016, 4, 31);
+calendarOfMonth('cal1-2', d2);
+	
+d3 = new Date(); d3.setFullYear(2016, 7, 27);
+calendarOfMonth('cal1-3', d3);
+
+
+d1 = new Date(); d1.setFullYear(2016, 0, 1);
+$c1 = getDayContent('cal1-1', d1);
+$c1.append('<small>1.1.<small>');
+
+d2 = new Date(); d2.setFullYear(2016, 4, 31);
+$c2 = getDayContent('cal1-2', d2);
+$c2.append('<small>31.5.</small>');
+
+d3 = new Date(); d3.setFullYear(2016, 7, 27);
+$c3 = getDayContent('cal1-3', d3);
+$c3.append('<small>27.8.</small>');
+	
+
+d1 = new Date(); d1.setFullYear(2016, 0, 3);
+createCalendarSheduler('cal2-1', d1);
+
+d2 = new Date(); d2.setFullYear(2016, 4, 31);
+createCalendarSheduler('cal2-2', d2);
+	
+d3 = new Date(); d3.setFullYear(2016, 7, 27);
+createCalendarSheduler('cal2-3', d3);
+
+
+d1 = new Date(); d1.setFullYear(2016, 0, 1);
+addToDay('cal2-1', d1, 'something');
+
+d2 = new Date(); d2.setFullYear(2016, 4, 31);
+addToDay('cal2-2', d2, 'anything');
+
+d3 = new Date(); d3.setFullYear(2016, 7, 27);
+addToDay('cal2-3', d3, 'nothing');
+addToDay('cal2-3', d3, 'really nothing');
+	
+	
+	</script>
+	
+	
+	
+	</body>
+	</html>
