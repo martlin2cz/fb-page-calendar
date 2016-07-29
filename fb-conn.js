@@ -40,7 +40,7 @@ window.fbAsyncInit = function() {
 }(document, 'script', 'facebook-jssdk'));
 
 function doFBstuff() {
-	createCalendarAndLoadPosts();
+	createCalendarAndLoadPosts(DATE);
 }
 
 
@@ -65,17 +65,34 @@ function fbLoadPosts(postHandler, lastHandler, date) {
 	var query = '/' + PAGE_ID + '/promotable_posts'
 		+'?is_published=' + 'true'
 		+ '&since=' + '1-' + month + '-' + year
-		+ '&until=' + '1-' + nextMonth + '-' + nextMonthYear;
+		+ '&until=' + '1-' + nextMonth + '-' + nextMonthYear
+		+ '&limit=100'
+		+ '&fields=id,message,story,created_time,picture';
 
+	invokeLoadPostsQuery(query, postHandler, lastHandler);
+}
 
+function invokeLoadPostsQuery(query, postHandler, lastHandler) {
 	FB.api(query, function(response) {
 		console.log(response);
+		if (response.error) {
+			alert('Error: ' + JSON.stringify(response.error));
+			return;
+		}
+
 		var i;
 		for (i = 0; i < response.data.length; i++) {
 			var post = response.data[i];
 			postHandler(post);
 		}
-	
-		lastHandler();
+
+		if (response.paging && response.paging.next) {
+			var next = response.paging.next;
+			invokeLoadPostsQuery(next, postHandler, null);
+		}
+
+		if (lastHandler) {
+			lastHandler();
+		}
 	});
 }

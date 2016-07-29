@@ -38,15 +38,42 @@ table.calendar-table td {
 	font-size: 150%;
 }
 
-.csd-items{
-	list-style: none;
+.csd-items-table {
 	display: block;
 	padding: 0%;
 	margin: 5%;
+	border-collapse: collapse;
 }
 
-.csd-item {
-	display: block;
+/********************/
+/* styles of posts overlay */
+.whole-post {
+}
+
+.post-date-cell {
+	width: 4eM;
+	padding-right: 1eM;
+	border-bottom: 1px solid gray;
+}
+
+.post-prev-image-cell {
+	width: 3em;
+	max-height: 4em;
+
+	padding-right: 1eM;
+	vertical-align: middle;
+	border-bottom: 1px solid gray;
+
+}
+
+.post-prev-image {
+	width: 2em;
+	max-height: 4em;
+}
+
+.post-text-cell {
+	border-bottom: 1px solid gray;
+
 }
 
 /*******************/
@@ -78,7 +105,7 @@ table.calendar-table td {
 
 #overlay-content {
 	background-color: white;
-	position: fixed;
+	position: absolute;
 	left: 10%;
 	top: 10%;
 	max-width: 80%;

@@ -34,7 +34,7 @@ function appendDayContentContent($content) {
 		var $countLink = $('<a href="#" class="csd-count csd-count-empty"></a>');
 		$content.append($countLink);
 		
-		var $itemsList = $('<ul class="csd-items hidden"></ul>');
+		var $itemsList = $('<table class="csd-items-table hidden"></table>');
 		$content.append($itemsList);
 	
 		$countLink.click(function() { 
@@ -50,16 +50,16 @@ function appendDayContentContent($content) {
 */
 function addToDay(ownerID, day, what) {
 	var $content = getDayContent(ownerID, day);
-	var $what = $('<li class="csd-item">' + what + '</li>');
-	$($content).find('ul.csd-items').append($what);
+	var $what = $(what); //$('<tr class="csd-item">' + what + '</tr>');
+	$($content).find('table.csd-items-table').append($what);
 
 	var $count = $($content).find('a.csd-count');
 	var count;
 	if ($count.text() == '') {
 		$count.removeClass('csd-count-empty');
+		$count.addClass('csd-count-nonempty');
 		count = 1;
 	} else {
-		$count.addClass('csd-count-nonempty');
 		count = parseInt($count.text()) + 1;
 	}
 	$count.text(count);
