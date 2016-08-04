@@ -52,22 +52,24 @@ table.calendar-table td {
 
 .post-date-cell {
 	width: 4eM;
-	padding-right: 1eM;
 	border-bottom: 1px solid gray;
 }
 
 .published-date {
-	background-color: lightgreen;
+	background-color: HoneyDew;
 }
 
 .unpublished-date {
-	background-color: lightpink;
+	background-color: LavenderBlush;
 }
+
 .post-prev-image-cell {
 	width: 3em;
 	max-height: 4em;
 
 	padding-right: 1eM;
+	padding-left: 1eM;
+	
 	vertical-align: middle;
 	border-bottom: 1px solid gray;
 
@@ -92,6 +94,11 @@ table.calendar-table td {
 
 /*******************/
 /* page styling */
+a {
+	text-decoration: none;
+	color: MidnightBlue;
+}
+
 #login-initial-status {
 }
 
@@ -103,7 +110,9 @@ table.calendar-table td {
 	display: none;
 }
 
-
+footer {
+	font-style: italic;
+}
 /*******************/
 /* other classes */
 

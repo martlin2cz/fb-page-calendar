@@ -5,6 +5,12 @@
 	 */
 
 /********************************************************************/
+/* days and months names */
+var DAYS = [ 'Po', 'Út', 'St', 'Čt', 'Pá', 'So', 'Ne' ];
+var MONTHS = [ 'leden', 'únor', 'březen', 'duben', 'květen', 'červen', 
+	'červenec', 'srpen', 'září', 'říjen', 'listopad', 'prosinec' ];
+
+/********************************************************************/
 
 /**
 	Returns copy of given date. What else?
@@ -78,17 +84,38 @@ function generateCalendar(ownerID, from, days, date) {
 
 	var month = date.getMonth() + 1;
 	var year = date.getFullYear();
-	$thead = $('<thead><tr><th colspan="7">Month ' + month + ' of year ' + year + '</th></tr></thead>'); 
 
-	$hrow=$('<tr><th>Po</th><th>Út</th><th>St</th><th>Čt</th><th>Pá</th><th>So</th><th>Ne</th></tr>');
-	$thead.append($hrow);
-
+	var $thead = generateCalendarThead(month, year);
 	var $tbody = generateCalendarTbody(from, days);
 
 	$table.append($thead);
 	$table.append($tbody);
 
 	$('#' + ownerID).append($table);
+}
+
+function generateCalendarThead(month, year) {
+	var $thead = $('<thead></thead>'); 
+	var monthName = MONTHS[month - 1];
+
+	$title= $('<tr>'
+			+ '<th><input type="button" value="&lt;" class="header-button" onClick="gotoPreviousMonth();" /></th>'
+			+ '<th colspan="5">' + monthName + ' ' + year + '</th>'
+			+ '<th><input type="button" value="&gt;" class="header-button" onClick="gotoNextMonth();" /></th>'
+			+ '</tr>');
+	
+  $hrow=$('<tr></tr>');
+	var i;
+	for (i = 1; i <= 7; i++) {
+		var dayName = DAYS[i - 1];
+		var $hday = $('<th>' + dayName + '</th>');
+		$hrow.append($hday);
+	}
+	
+	$thead.append($title);
+	$thead.append($hrow);
+
+	return $thead;
 }
 
 /**
@@ -105,7 +132,10 @@ function generateCalendarTbody(from, days) {
 			if (i <= 0 || i > days) {
 				$cell = $('<td class="calendar-day-cell"></td>');
 			} else {
-				$cell = $('<td class="calendar-day-cell"><span class="calendar-day-number">' + i + '</span><div class="calendar-day-content"> </div></td>');
+				$cell = $('<td class="calendar-day-cell">'
+						+ '<span class="calendar-day-number">' + i + '</span>'
+						+ '<div class="calendar-day-content">'
+						+ '</div></td>');
 			}
 	
 			$row.append($cell);

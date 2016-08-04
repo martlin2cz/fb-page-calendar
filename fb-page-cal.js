@@ -4,11 +4,14 @@
 	28.7.2016
 */
 
+/*******************************************************************/
+/* facebook loging in */
+
 function loginSuccessfull() {
 	toggleStatus(true);                                                                                                                
 	hideLoading();
 
-	doFBstuff();
+	doTheLoading();
 }
 
 function loginUnsuccessfull(cause) {
@@ -18,8 +21,10 @@ function loginUnsuccessfull(cause) {
 	alert(cause);
 }
 
-function doFBstuff() {                                                                                                                 
-	  createCalendarAndLoadPosts(DATE, true, true);
+/*******************************************************************/
+/* create calendar and load posts */
+function doTheLoading() {
+	  createCalendarAndLoadPosts(DATE, PUBLISHED, SHEDULED);
 }
 
 /* Initialization of page and calendar of given month and published and sheduled flags */
@@ -27,47 +32,38 @@ function createCalendarAndLoadPosts(date, published, sheduled) {
 
 	console.info('Starting to init calendar and load posts of month:' + date);
 
-	//TODO if published? if sheduled?
 	createCalendar(date);
-	loadPublishedPosts(date);
-	loadSheduledPosts(date);
+	if (published) {
+		loadPublishedPosts(date);
+	}
+	if (sheduled) {
+		loadSheduledPosts(date);
+	}
 }
 
 
 function createCalendar(date) {
 	showLoading('creating calendar');
+	$('#calendar-wrapper').empty();
 	createCalendarSheduler('calendar-wrapper', date);
 }
 
 
 /* loading and displaying posts */
-function timeToStr(date) {
-	var hours;
-	if (date.getHours() < 10) {
-		hours = "&nbsp;" + date.getHours();
-	} else {
-		hours = date.getHours();
-	}
-	
-	var minutes;
-	if (date.getMinutes() < 10) {
-		minutes = "0" + date.getMinutes();
-	} else {
-		minutes = date.getMinutes();
-	}
 
-	return hours + ":" + minutes;
-}
 
 var postToCalendarHandler = function(post) {
 	//console.log(post);
 	var what = '<tr class="whole-post">';
 
-	what = what + '<td '
+	var url = 'http://facebook.com/' + post.id;
+	what = what + '<th '
 		+ 'title="' + post.when + '" '
 		+ 'class="post-date-cell ' + (post.yetPublished ? 'published-date' : 'unpublished-date') + '">'
-		+ timeToStr(post.when) + 
-		'</td>';
+		+ '<a href="' + url + '" target="_blank">'
+		+ timeToStr(post.when) 
+		+ '</a>' 
+		+ '</th>';
 
 	if (post.picture) {
 		what = what + '<td class="post-prev-image-cell">'
@@ -86,7 +82,7 @@ var postToCalendarHandler = function(post) {
 	}
 
 	what = what + '<td class="post-text-cell" ' 
-		+ 'title="' + post.text + '">' 
+		+ 'title="' + post.text.replace(/\"/g, '&quot;') + '">' 
 		+ shorten(post.text) 
 		+ '</td>';
 	
@@ -102,9 +98,9 @@ var startLoadingHandler = function() {
 };
 
 var lastPostHandler = function() {
-	//FIXME sort items ... 
 	loadingCount--;
 	if (loadingCount == 0) {
+		//FIXME sort items ... 
 		hideLoading();
 	}
 };
@@ -118,7 +114,40 @@ function loadSheduledPosts(date) {
 }
 
 /******************************************************************************/
+/* handling of user actions */
+function gotoNextMonth() {
+	DATE.setDate(1);
+	DATE.setMonth(DATE.getMonth() + 1);
+	doTheLoading();
+}
+
+function gotoPreviousMonth() {
+	DATE.setDate(1);
+	DATE.setMonth(DATE.getMonth() - 1);
+	doTheLoading();
+}
+
+/******************************************************************************/
 /* help methods */
+
+function timeToStr(date) {
+	var hours;
+	if (date.getHours() < 10) {
+		hours = "&nbsp;" + date.getHours();
+	} else {
+		hours = date.getHours();
+	}
+	
+	var minutes;
+	if (date.getMinutes() < 10) {
+		minutes = "0" + date.getMinutes();
+	} else {
+		minutes = date.getMinutes();
+	}
+
+	return hours + ":" + minutes;
+}
+
 function fromUrlOrDefault(name, dflt) {
 	//SOURCE: http://stackoverflow.com/questions/979975/how-to-get-the-value-from-the-url-parameter
 	var url = location.href;
