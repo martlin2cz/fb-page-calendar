@@ -43,7 +43,9 @@
 	<body>
 
 		<article>
-			
+			<div id="login-initial-status">
+				<p>Are you logged in?</p>
+			</div>
 			<div id="not-logged">
 				<p>
 					Please log in:
@@ -57,9 +59,8 @@
 				</p>
 				<div id="calendar-wrapper"></div>
 			</div>
-		<div id="status">
-		</div>
 		</article>
+		
 		<footer>Facebook page calendar <?= APP_VERSION ?>, <a href="https://github.com/martlin2cz/fb-page-calendar.git">github</a></footer>
 	</body>
 </html>

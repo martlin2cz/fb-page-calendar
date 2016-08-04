@@ -4,6 +4,19 @@
 	28.7.2016
 */
 
+function loginSuccessfull() {
+	toggleStatus(true);                                                                                                                
+	hideLoading();
+
+	doFBstuff();
+}
+
+function loginUnsuccessfull(cause) {
+	toggleStatus(false); 
+	hideLoading();
+
+	alert(cause);
+}
 
 function doFBstuff() {                                                                                                                 
 	  createCalendarAndLoadPosts(DATE, true, true);
@@ -12,13 +25,12 @@ function doFBstuff() {
 /* Initialization of page and calendar of given month and published and sheduled flags */
 function createCalendarAndLoadPosts(date, published, sheduled) {
 
-	console.debug('Starting to init calendar and load posts of month:' + date);
+	console.info('Starting to init calendar and load posts of month:' + date);
 
 	//TODO if published? if sheduled?
 	createCalendar(date);
 	loadPublishedPosts(date);
 	loadSheduledPosts(date);
-
 }
 
 
@@ -29,22 +41,43 @@ function createCalendar(date) {
 
 
 /* loading and displaying posts */
+function timeToStr(date) {
+	var hours;
+	if (date.getHours() < 10) {
+		hours = "&nbsp;" + date.getHours();
+	} else {
+		hours = date.getHours();
+	}
+	
+	var minutes;
+	if (date.getMinutes() < 10) {
+		minutes = "0" + date.getMinutes();
+	} else {
+		minutes = date.getMinutes();
+	}
+
+	return hours + ":" + minutes;
+}
 
 var postToCalendarHandler = function(post) {
-	console.log(post);
+	//console.log(post);
 	var what = '<tr class="whole-post">';
 
 	what = what + '<td '
 		+ 'title="' + post.when + '" '
 		+ 'class="post-date-cell ' + (post.yetPublished ? 'published-date' : 'unpublished-date') + '">'
-		+ post.when.getHours() + ':' + post.when.getMinutes() + 
+		+ timeToStr(post.when) + 
 		'</td>';
 
 	if (post.picture) {
 		what = what + '<td class="post-prev-image-cell">'
+			+ '<a href="'
+			+ post.picture
+			+ '" target="_blank">'
 			+ '<img class="post-prev-image" src="' 
 			+ post.picture 
 			+ '" alt="prev" />'
+			+ '</a>'
 			+ '</td>';
 	} else {
 		what = what + '<td class="post-prev-image-cell">' 
@@ -61,19 +94,27 @@ var postToCalendarHandler = function(post) {
 	addToDay('calendar-wrapper', post.when, what);
 };
 
+
+var loadingCount = 0;
+var startLoadingHandler = function() {
+	showLoading('loading posts');
+	loadingCount++;
+};
+
 var lastPostHandler = function() {
-	//FIXME $(".csd-items").append($(".csd-item").get().reverse());
-	hideLoading();
+	//FIXME sort items ... 
+	loadingCount--;
+	if (loadingCount == 0) {
+		hideLoading();
+	}
 };
 
 function loadPublishedPosts(date) {
-	showLoading('loading published posts');
-	fbLoadPublishedPosts(postToCalendarHandler, lastPostHandler, date);
+	fbLoadPublishedPosts(postToCalendarHandler, startLoadingHandler, lastPostHandler, date);
 }
 
 function loadSheduledPosts(date) {
-	showLoading('loading sheduled posts');
-	fbLoadSheduledPosts(postToCalendarHandler, lastPostHandler, date);
+	fbLoadSheduledPosts(postToCalendarHandler, startLoadingHandler, lastPostHandler, date);
 }
 
 /******************************************************************************/
@@ -105,17 +146,17 @@ function fromUrlOrNow() {
 function shorten(text) {
 	var index = text.indexOf('\n');
 	
-	var substr;
 	if (index != -1) {
-		substr = text.substr(0, index);
+		var substr = text.substr(0, index);
+		return substr + " ...";	
 	} else {
-		substr = text;
+		return text;
 	}
-
-	return substr + "...";
 }
 
 function toggleStatus(isLogged) {
+	$('#login-initial-status').hide();
+	
 	if (isLogged) {
 		$('#not-logged').hide();
 		$('#logged').show();

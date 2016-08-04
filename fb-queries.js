@@ -32,7 +32,7 @@ function isGreaterMonth(firstDate, secondDate) {
 	return isSmallerMonth(secondDate, firstDate);	//hehe
 }
 
-function fbLoadPublishedPosts(postHandler, lastPostHandler, date) {
+function fbLoadPublishedPosts(postHandler, startLoadingHandler, lastPostHandler, date) {
   var month = date.getMonth() + 1;
   var year = date.getFullYear();
   var nextMonth = nextMonthOf(date);
@@ -56,11 +56,11 @@ function fbLoadPublishedPosts(postHandler, lastPostHandler, date) {
 		return true;
   };
 
-  invokeLoadPostsQuery(query, rawPostHandler, lastPostHandler);
+  invokeLoadPostsQuery(query, rawPostHandler, startLoadingHandler, lastPostHandler);
 }
 
 
-function fbLoadSheduledPosts(postHandler, lastPostHandler, date) {
+function fbLoadSheduledPosts(postHandler, startLoadingHandler, lastPostHandler, date) {
   
   var query = '/' + PAGE_ID + '/promotable_posts'
     + '?is_published=' + 'false'
@@ -84,11 +84,15 @@ function fbLoadSheduledPosts(postHandler, lastPostHandler, date) {
 		}
   };
 
-  invokeLoadPostsQuery(query, rawPostHandler, lastPostHandler);
+  invokeLoadPostsQuery(query, rawPostHandler, startLoadingHandler, lastPostHandler);
 }
 
-function invokeLoadPostsQuery(query, rawPostHandler, lastPostHandler) {
-  FB.api(query, function(response) {
+function invokeLoadPostsQuery(query, rawPostHandler, startLoadingHandler, lastPostHandler) {
+  if (startLoadingHandler) {
+		startLoadingHandler();
+	}
+	
+	FB.api(query, function(response) {
     console.log(response);
     if (response.error) {
       alert('Error:\n' + JSON.stringify(response.error));
@@ -111,12 +115,13 @@ function invokeLoadPostsQuery(query, rawPostHandler, lastPostHandler) {
 
     if (!broken && response.paging && response.paging.next) {
       var next = response.paging.next;
-      invokeLoadPostsQuery(next, rawPostHandler, null);
-    }
+      invokeLoadPostsQuery(next, rawPostHandler, null, lastPostHandler);
+    } else {
+			if (lastPostHandler) {
+				lastPostHandler();
+			}
+		}
 
-    if (lastPostHandler) {
-      lastPostHandler();
-    }
   });
 }
 

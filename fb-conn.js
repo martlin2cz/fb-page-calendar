@@ -3,20 +3,19 @@
 	m@rtlin & FB
 	04.08.2016
 	source: https://developers.facebook.com/docs/facebook-login/web
+
+	Calls functions loginSuccessfull() or loginUnsuccessfull(cause) on page load depending on facebook login status
 */
 
 function statusChangeCallback(response) {
 	//console.log(response);
 	
 	if (response.status === 'connected') { // Logged into your app and Facebook.
-		doFBstuff();
-		toggleStatus(true);
+		loginSuccessfull();
 	} else if (response.status === 'not_authorized') { // The person is logged into Facebook, but not your app.
-		alert('Please log into this app.');
-		toggleStatus(false);
+		loginUnsuccessfull('Please log into this app.');
 	} else { // The person is not logged into Facebook, so we're not sure if they are logged into this app or not.
-		alert('Please log into Facebook.');
-		toggleStatus(false);
+		loginUnsuccessfull('Please log into Facebook.');
 	}
 }
 

@@ -90,6 +90,19 @@ table.calendar-table td {
 
 }
 
+/*******************/
+/* page styling */
+#login-initial-status {
+}
+
+#not-logged {
+	display: none;
+}
+
+#logged {
+	display: none;
+}
+
 
 /*******************/
 /* other classes */
