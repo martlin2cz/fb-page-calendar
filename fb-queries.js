@@ -95,7 +95,7 @@ function invokeLoadPostsQuery(query, rawPostHandler, startLoadingHandler, lastPo
 	FB.api(query, function(response) {
     console.log(response);
     if (response.error) {
-      alert('Error:\n' + JSON.stringify(response.error));
+      alert('Došlo k následující chybě:\n' + JSON.stringify(response.error));
       return;
     }
 

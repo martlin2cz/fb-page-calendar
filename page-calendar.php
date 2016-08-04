@@ -11,13 +11,13 @@
 	define('API_VERSION', 'v2.7');
 
 	//application configuration
-	define('APP_VERSION', '0.2');
+	define('APP_VERSION', '0.3');
 
 	//page to be managed, can be overriden by URL querry: ?pageid=foo
 	define('PAGE_ID', 'zuck'); 
 ?>
 
-		<title>Facebook page posts calendar</title>
+		<title>Kalendář publikovaných a naplánovaných příspěvků FB stránky</title>
 		<meta charset="UTF-8">
 	
 		<link rel="stylesheet" href="calendar-sheduler.css">
@@ -45,18 +45,18 @@
 
 		<article>
 			<div id="login-initial-status">
-				<p>Are you logged in?</p>
+				<p>Jste přihlášen?</p>
 			</div>
 			<div id="not-logged">
 				<p>
-					Please log in:
+					Prosím, přihlašte se zde:
 				
 					<fb:login-button scope="<?= APP_SCOPE ?>" onlogin="checkLoginState();"></fb:login-button>
 				</p>
 			</div>
 			<div id="logged">
 				<!-- <p> 	Ok, you're logged in. </p> -->
-				<p>Posts of page 
+				<p>Příspěvky stránky
 					<script> 
 						document.write('<a href="https://facebook.com/' + PAGE_ID + '" target="_blank">' + PAGE_ID + '</a>');
 					</script>
@@ -65,6 +65,6 @@
 			</div>
 		</article>
 		
-		<footer>Facebook page calendar <?= APP_VERSION ?>, <a href="https://github.com/martlin2cz/fb-page-calendar.git">github</a></footer>
+		<footer>Kalendář publikovaných a naplánovaných příspěvků FB stránky (Facebook page calendar) <?= APP_VERSION ?>, <a href="https://github.com/martlin2cz/fb-page-calendar.git">github</a></footer>
 	</body>
 </html>

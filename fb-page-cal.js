@@ -43,7 +43,7 @@ function createCalendarAndLoadPosts(date, published, sheduled) {
 
 
 function createCalendar(date) {
-	showLoading('creating calendar');
+	showLoading('Konstruuji kalendář');
 	$('#calendar-wrapper').empty();
 	createCalendarSheduler('calendar-wrapper', date);
 }
@@ -93,7 +93,7 @@ var postToCalendarHandler = function(post) {
 
 var loadingCount = 0;
 var startLoadingHandler = function() {
-	showLoading('loading posts');
+	showLoading('Načítám příspěvky');
 	loadingCount++;
 };
 
@@ -196,7 +196,7 @@ function toggleStatus(isLogged) {
 }
 
 function showLoading(what) {
-	var $content = $('<div id="loading"><h2>Counting to infinity, please wait ...</h2><p>' + what + '</p></div>');
+	var $content = $('<div id="loading"><h2>Vyčkejte, jen napočítám do nekonečna ...</h2><p>' + what + '</p></div>');
 	showOverlay($content);
 }
 
@@ -206,6 +206,6 @@ function hideLoading() {
 }
 
 $(function() {
-	showLoading('connecting to facebook');
+	showLoading('Navazuji spojení s facebookem');
 });
 
