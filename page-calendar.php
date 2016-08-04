@@ -26,7 +26,7 @@
 		<script src="calendar.js"></script>
 		<script src="calendar-sheduler.js"></script>
 		<script src="fb-page-cal.js"></script>
-		<script>
+	<script>
 			//facebook app specification
 			var APP_ID = "<?= APP_ID ?>";
 			var APP_SCOPE = "<?= APP_SCOPE ?>";
@@ -36,7 +36,8 @@
 			var DATE = fromUrlOrNow();
 		</script>
 		<script src="fb-conn.js"></script>
-
+		<script src="fb-queries.js"></script>
+	
 
 </head>
 	<body>

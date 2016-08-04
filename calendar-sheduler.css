@@ -56,6 +56,13 @@ table.calendar-table td {
 	border-bottom: 1px solid gray;
 }
 
+.published-date {
+	background-color: lightgreen;
+}
+
+.unpublished-date {
+	background-color: lightpink;
+}
 .post-prev-image-cell {
 	width: 3em;
 	max-height: 4em;

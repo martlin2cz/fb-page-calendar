@@ -1,3 +1,10 @@
+/**
+	Implementation of facebook connection and login
+	m@rtlin & FB
+	04.08.2016
+	source: https://developers.facebook.com/docs/facebook-login/web
+*/
+
 function statusChangeCallback(response) {
 	//console.log(response);
 	
@@ -38,61 +45,3 @@ window.fbAsyncInit = function() {
 	js.src = "//connect.facebook.net/en_US/sdk.js";
 	fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
-
-function doFBstuff() {
-	createCalendarAndLoadPosts(DATE);
-}
-
-
-function nextMonthOf(date) {
-	return (date.getMonth() + 1)  % 12 + 1;
-}
-
-function nextMonthYearOf(date) {
-	if (date.getMonth() == 11) {
-		return date.getFullYear() + 1; 
-	} else {
-		return date.getFullYear();
-	}
-}
-
-function fbLoadPosts(postHandler, lastHandler, date) {
-	var month = date.getMonth() + 1;
-	var year = date.getFullYear();
-	var nextMonth = nextMonthOf(date);
-	var nextMonthYear = nextMonthYearOf(date);
-	
-	var query = '/' + PAGE_ID + '/promotable_posts'
-		+'?is_published=' + 'true'
-		+ '&since=' + '1-' + month + '-' + year
-		+ '&until=' + '1-' + nextMonth + '-' + nextMonthYear
-		+ '&limit=100'
-		+ '&fields=id,message,story,created_time,picture';
-
-	invokeLoadPostsQuery(query, postHandler, lastHandler);
-}
-
-function invokeLoadPostsQuery(query, postHandler, lastHandler) {
-	FB.api(query, function(response) {
-		console.log(response);
-		if (response.error) {
-			alert('Error: ' + JSON.stringify(response.error));
-			return;
-		}
-
-		var i;
-		for (i = 0; i < response.data.length; i++) {
-			var post = response.data[i];
-			postHandler(post);
-		}
-
-		if (response.paging && response.paging.next) {
-			var next = response.paging.next;
-			invokeLoadPostsQuery(next, postHandler, null);
-		}
-
-		if (lastHandler) {
-			lastHandler();
-		}
-	});
-}

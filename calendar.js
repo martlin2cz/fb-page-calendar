@@ -98,14 +98,14 @@ function generateCalendarTbody(from, days) {
 	var $tbody = $('<tbody></tbody>');
 	var i, j;
 	for (i = - from + 2; i <= days; 1) {
-		var $row = $('<tr></tr>');
+		var $row = $('<tr class="calendar-week-row"></tr>');
 		for (j = 1; j <= 7; j++) {
 			
 			var $cell;
 			if (i <= 0 || i > days) {
-				$cell = $('<td></td>');
+				$cell = $('<td class="calendar-day-cell"></td>');
 			} else {
-				$cell = $('<td><span class="calendar-day-number">' + i + '</span><div class="calendar-day-content"> </div></td>');
+				$cell = $('<td class="calendar-day-cell"><span class="calendar-day-number">' + i + '</span><div class="calendar-day-content"> </div></td>');
 			}
 	
 			$row.append($cell);
@@ -122,11 +122,11 @@ function generateCalendarTbody(from, days) {
 	For given date returns cell's content div found in given ID of calendar
 */
 function getDayContent(ownerID, date) {
-	var row = 2 + rowOfDay(date);
+	var row = rowOfDay(date);
 	var col = colOfDay(date);
 	//console.debug('row=' + row + ',col=' + col);
-	var $content = $('#' + ownerID + ' > table tr:eq(' + row + ') td:eq(' + col + ') > .calendar-day-content');
-	//console.log($content);
+	var $content = $('#' + 'calendar-wrapper' + ' > table > tbody > tr:eq(' + row + ') > td:eq(' + col + ') > .calendar-day-content');
+	//console.debug($content);
 	return $content;
 }
 

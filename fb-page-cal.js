@@ -4,48 +4,76 @@
 	28.7.2016
 */
 
-/* Initialization of page and calendar */
-function createCalendarAndLoadPosts(date) {
 
-	showLoading('loading posts');
+function doFBstuff() {                                                                                                                 
+	  createCalendarAndLoadPosts(DATE, true, true);
+}
 
+/* Initialization of page and calendar of given month and published and sheduled flags */
+function createCalendarAndLoadPosts(date, published, sheduled) {
+
+	console.debug('Starting to init calendar and load posts of month:' + date);
+
+	//TODO if published? if sheduled?
 	createCalendar(date);
-	loadPosts(date);
+	loadPublishedPosts(date);
+	loadSheduledPosts(date);
+
 }
 
 
 function createCalendar(date) {
+	showLoading('creating calendar');
 	createCalendarSheduler('calendar-wrapper', date);
 }
 
 
 /* loading and displaying posts */
-function loadPosts(date) {
-	var postHandler = function(post) {
-		var when = new Date(post.created_time);
-		//console.log(post);
 
-		var what = '<tr class="whole-post">';
+var postToCalendarHandler = function(post) {
+	console.log(post);
+	var what = '<tr class="whole-post">';
 
-		what = what + '<td class="post-date-cell">' + when.getHours() + ':' + when.getMinutes() + '</td>';
-		if (post.picture) {
-			what = what + '<td class="post-prev-image-cell"><img class="post-prev-image" src="' + post.picture + '" alt="prev" /></td>';
-		} else {
-			what = what + '<td class="post-prev-image-cell">&nbsp;</td>';
-		}
-		what = what + '<td class="post-text-cell">' + shorten(post.message || post.story) + '</td>';
-		what = what + '</tr>';
+	what = what + '<td '
+		+ 'title="' + post.when + '" '
+		+ 'class="post-date-cell ' + (post.yetPublished ? 'published-date' : 'unpublished-date') + '">'
+		+ post.when.getHours() + ':' + post.when.getMinutes() + 
+		'</td>';
 
-		addToDay('calendar-wrapper', when, what);
-	};
+	if (post.picture) {
+		what = what + '<td class="post-prev-image-cell">'
+			+ '<img class="post-prev-image" src="' 
+			+ post.picture 
+			+ '" alt="prev" />'
+			+ '</td>';
+	} else {
+		what = what + '<td class="post-prev-image-cell">' 
+			+ '&nbsp;' 
+			+ '</td>';
+	}
 
-	var lastHandler = function() {
-		//FIXME $(".csd-items").append($(".csd-item").get().reverse());
-		hideLoading();
-	};
+	what = what + '<td class="post-text-cell" ' 
+		+ 'title="' + post.text + '">' 
+		+ shorten(post.text) 
+		+ '</td>';
+	
+	what = what + '</tr>';
+	addToDay('calendar-wrapper', post.when, what);
+};
 
+var lastPostHandler = function() {
+	//FIXME $(".csd-items").append($(".csd-item").get().reverse());
+	hideLoading();
+};
 
-	fbLoadPosts(postHandler, lastHandler, date);
+function loadPublishedPosts(date) {
+	showLoading('loading published posts');
+	fbLoadPublishedPosts(postToCalendarHandler, lastPostHandler, date);
+}
+
+function loadSheduledPosts(date) {
+	showLoading('loading sheduled posts');
+	fbLoadSheduledPosts(postToCalendarHandler, lastPostHandler, date);
 }
 
 /******************************************************************************/
