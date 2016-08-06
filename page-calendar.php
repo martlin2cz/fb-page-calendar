@@ -31,14 +31,14 @@
 	
 	<script>
 			//facebook app specification
-			var APP_ID = "<?= APP_ID ?>";
-			var APP_SCOPE = "<?= APP_SCOPE ?>";
-			var API_VERSION = "<?= API_VERSION ?>";
+			APP_ID = "<?= APP_ID ?>";
+			APP_SCOPE = "<?= APP_SCOPE ?>";
+			API_VERSION = "<?= API_VERSION ?>";
 			//application configuration
-			var PAGE_ID = fromUrlOrDefault('pageid', "<?= PAGE_ID ?>");	//id of page to admin
-			var DATE = fromUrlOrNow();	//month to show
-			var PUBLISHED = true;	//show published posts?
-			var SHEDULED = true;	//show sheduled posts?
+			PAGE_ID = fromUrlOrDefault('pageid', "<?= PAGE_ID ?>");	//id of page to admin
+			DATE = fromUrlOrNow();	//month to show
+			PUBLISHED = true;	//show published posts?
+			SHEDULED = true;	//show sheduled posts?
 		</script>
 </head>
 	<body>
