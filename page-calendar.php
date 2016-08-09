@@ -7,7 +7,7 @@
 
 	//facebook configuration
 	define('APP_ID', '592321284281979');
-	define('APP_SCOPE', 'public_profile,manage_pages');
+	define('APP_SCOPE', 'public_profile,manage_pages,pages_manage_cta,ads_management,business_management');
 	define('API_VERSION', 'v2.7');
 
 	//application configuration
